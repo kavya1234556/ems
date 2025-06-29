@@ -37,9 +37,9 @@ class AuthController extends Controller
             'password' => $request->get('password')
         );
         if (Auth::attempt($user_data)) {
-            return redirect('/home');
+            return redirect('/department');
         } else {
-            return back()->with('error', 'Invalid Credentials hahaha ');
+            return back()->with('error', 'Invalid Credentials');
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,10 +21,10 @@ class Employee extends Model
         "salary",
         "hire_date",
         "image",
-        "department_id"
+        "dept_id"
     ];
-    public function departments(): BelongsToMany
+    public function departments(): BelongsTo
     {
-        return $this->belongsToMany(Department::class);
+        return $this->belongsTo(Department::class, 'dept_id');
     }
 }

@@ -12,7 +12,7 @@
     <x-navbar />
 
     <div class="flex justify-end p-3">
-        <a href="department/add">
+        <a href="{{ route('addDepartment') }}">
             <button class="w-[150px] bg-blue-500 text-white mt-[20px] rounded-xl h-[40px] hover:bg-blue-600">
                 Add Department
             </button>

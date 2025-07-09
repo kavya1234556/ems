@@ -5,23 +5,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @vite('resources/css/app.css')
-    <title>Add Employee</title>
+    <title>Edit Employee</title>
 </head>
-
-
 
 
 <body>
     <x-navbar />
     <div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
         <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-3xl ">
-            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Add New Employee</h2>
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Edit Employee</h2>
 
 
-            <form class="space-y-6" action="{{ route('add_employee') }}" method="POST" enctype="multipart/form-data">
+            <form class="space-y-6" action="{{ route('edit.employee', $employee->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
+                {{-- @method('PUT') --}}
                 <div class="flex flex-col items-center mb-6">
-                    <img id="imagePreview" src="https://via.placeholder.com/150"
+                    <img id="imagePreview" src={{ asset('storage/' . $employee->image) }}
                         class="w-32 h-32 rounded-full object-cover border border-gray-300 mb-4" />
                     <input type="file" id="image" name="image" accept="image/*"
                         class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700" />
@@ -31,42 +31,46 @@
                     <div>
                         <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
                         <input type="text" id="first_name" name="first_name" required
+                            value='{{ $employee->first_name }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
                         <input type="text" id="last_name" name="last_name" required
+                            value='{{ $employee->last_name }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" required
+                        <input type="email" id="email" name="email" required value='{{ $employee->email }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                        <input type="text" id="phone" name="phone" required
+                        <input type="text" id="phone" name="phone" required value='{{ $employee->phone }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
-                        <input type="text" id="position" name="position" required
+                        <input type="text" id="position" name="position" required value='{{ $employee->position }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
                         <input type="number" id="salary" name="salary" required step="0.01"
+                            value='{{ $employee->salary }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div>
                         <label for="hire_date" class="block text-sm font-medium text-gray-700">Hire Date</label>
                         <input type="date" id="hire_date" name="hire_date" required
+                            value='{{ $employee->hire_date }}'
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                     </div>
 
@@ -75,7 +79,9 @@
                         <select id="dept_id" name="dept_id" required
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
                             @foreach ($departments as $dep)
-                                <option value={{ $dep->id }}>{{ $dep->name }}</option>
+                                <option {{ $dep->id == $employee->dept_id ? 'selected' : '' }}
+                                    value={{ $dep->id }}>
+                                    {{ $dep->name }}</option>
                             @endforeach
 
                         </select>

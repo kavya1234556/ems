@@ -23,62 +23,97 @@
                 <div class="flex flex-col items-center mb-6">
                     <img id="imagePreview" src="https://via.placeholder.com/150"
                         class="w-32 h-32 rounded-full object-cover border border-gray-300 mb-4" />
-                    <input type="file" id="image" name="image" accept="image/*"
+                    <input type="file" id="image" name="image" accept="image/*" value="{{ old('image') }}"
                         class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700" />
+                    @error('image')
+                        <span class="text-sm text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                     <div>
                         <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
                         <input type="text" id="first_name" name="first_name" required
-                            class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                            class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            value="{{ old('first_name') }}" />
+                        @error('first_name')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                        <input type="text" id="last_name" name="last_name" required
+                        <input type="text" id="last_name" name="last_name" required value="{{ old('last_name') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('last_name')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" required
+                        <input type="email" id="email" name="email" required value="{{ old('email') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('email')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                        <input type="text" id="phone" name="phone" required
+                        <input type="text" id="phone" name="phone" required value="{{ old('phone') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('phone')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
                         <input type="text" id="position" name="position" required
+                            value="{{ old(key: 'position') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('position')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
                         <input type="number" id="salary" name="salary" required step="0.01"
+                            value="{{ old('salary') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('salary')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="hire_date" class="block text-sm font-medium text-gray-700">Hire Date</label>
-                        <input type="date" id="hire_date" name="hire_date" required
+                        <input type="date" id="hire_date" name="hire_date" required value="{{ old('hire_date') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        @error('hire_date')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
-                        <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+
+                        <label for="dept_id" class="block text-sm font-medium text-gray-700">Department</label>
                         <select id="dept_id" name="dept_id" required
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="" selected>Select your option</option>
                             @foreach ($departments as $dep)
-                                <option value={{ $dep->id }}>{{ $dep->name }}</option>
+                                <option value="{{ $dep->id }}"
+                                    {{ old('dept_id') == $dep->id ? 'selected' : '' }}>
+                                    {{ $dep->name }}
+                                </option>
                             @endforeach
 
                         </select>
+                        @error('dept_id')
+                            <span class="text-sm text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
 
                 </div>

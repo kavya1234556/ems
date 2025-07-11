@@ -27,17 +27,18 @@ class AuthController extends Controller
 
     public function Login(Request $request)
     {
-        // $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required|alphaNum|min:3'
-        // ]);
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:3'
+        ]);
 
         $user_data = array(
             'email' => $request->get('email'),
             'password' => $request->get('password')
         );
+
         if (Auth::attempt($user_data)) {
-            return redirect('/department');
+            return redirect('/department')->with('success', 'Logged In Successfully');
         } else {
             return back()->with('error', 'Invalid Credentials');
         }

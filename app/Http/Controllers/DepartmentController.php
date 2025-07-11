@@ -12,7 +12,7 @@ class DepartmentController extends Controller
 {
     public function getAll()
     {
-        $department = Department::all();
+        $department = Department::latest()->get();
         return view("department", compact('department'));
     }
 
@@ -27,7 +27,7 @@ class DepartmentController extends Controller
             'description' => $request->description,
             'created_by' => User::where('email', 'admin@gmail.com')->get()->first()->id
         ]);
-        return redirect('department')->with('message', "New Department has been added");
+        return redirect('department')->with('success', "New Department has been added");
     }
     public function getbyId(string $id)
     {
@@ -46,11 +46,20 @@ class DepartmentController extends Controller
             'name' => $request->name,
             'description' => $request->description,
         ]);
-        return redirect('department')->with('message', "New Department has been added");
+        return redirect('department')->with('success', "Department has been edited");
     }
 
     public function deleteDepartment(string $id)
     {
         $department = Department::findOrFail($id);
+        $filteredValue = Employee::where('dept_id', $department->id)->get()->count();
+        if ($filteredValue > 1) {
+            return redirect()->back()->with('error', "Departments with active account cannot be deleted");
+        } else {
+            $department->delete();
+            return redirect()->back()->with('success', 'Department deleted successfully');
+        }
+
+
     }
 }

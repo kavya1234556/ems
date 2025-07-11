@@ -17,11 +17,17 @@
                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
                 <input type="email" id="email" name="email" required
                     class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                @error('email')
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
             </div>
             <div>
                 <label for="confirm-password" class="block text-sm font-medium text-gray-700"> Password</label>
                 <input type="password" id="password" name="password" required
                     class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                @error('password')
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                @enderror
             </div>
             @if (session('error'))
                 <x-alert :error="session('error')" />

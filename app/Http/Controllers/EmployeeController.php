@@ -5,26 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use File;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function getAllActive()
-    {
-        $employees = Employee::with('departments')->get();
-        return view("employee", compact("employees"));
-    }
+    // public function getAllActive()
+    // {
+    //     $employees = Employee::with('departments')->latest()->paginate(10);
+    //     $departments = Department::get();
+    //     return view("employee", compact("employees", "departments"));
+    // }
     public function getDepartment()
     {
         $departments = Department::all();
-        return view("employee.add", compact('departments'));
+        return view("employee.add", compact('departments'))
+        ;
     }
     public function create(Request $request)
     {
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|unique:employees,email',
             'phone' => 'required|max:10|min:10',
             'position' => 'required|string',
             'salary' => 'required|numeric',
@@ -57,10 +60,10 @@ class EmployeeController extends Controller
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|string|email',
+            'email' => 'required|email',
             'phone' => 'required|max:10|min:10',
             'position' => 'required|string',
-            'salary' => 'required|numeric',
+            'salary' => 'required|numeric|gt:0',
             'hire_date' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dept_id' => 'required|numeric'
@@ -91,6 +94,39 @@ class EmployeeController extends Controller
         $employee->update($data);
 
         return redirect('employee')->with('message', "Employee detail has been updated");
+    }
+    public function getAllActive(Request $request)
+    {
+        $departments = Department::get();
+        $query = Employee::query();
+        $id = $request->dept_id;
+        $searchData = $request->input('search');
+        // dd($searchData);
+        if ($id) {
+
+            $department = Department::findOrFail($id);
+            $query->where('dept_id', $department->id);
+        }
+        if ($searchData) {
+            // dd($searchData);
+            // $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
+
+            $query->where(function ($query) use ($searchData) {
+                $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
+            });
+        }
+        // dd($query);
+        $employees = $query->paginate(10);
+        // dd($employees);
+        //  else {
+        //     $employees = Employee::with('departments')->latest()->paginate(10);
+        // }
+        if ($employees->count() < 1) {
+            dd("hello");
+            return redirect()->back()->with('message', "No employee has been assigned to this group");
+        } else {
+            return view("employee", compact('employees', 'departments'));
+        }
     }
 
 

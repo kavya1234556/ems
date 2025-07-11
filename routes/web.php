@@ -17,13 +17,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 //employee
-Route::get('/employee', function () {
-    return view('/employee');
-})->middleware("auth");
 Route::get('/employee/add', function () {
     return view('employee/add');
 })->middleware("auth")->name('store.employee');
 Route::get('/employee', [EmployeeController::class, 'getAllActive'])->name('getAllEmployee');
+// Route::get('/employee/filter', [EmployeeController::class, 'filterByDepartment'])->name('filter.employee');
 Route::get('/employee/add', [EmployeeController::class, 'getDepartment'])->name('store.employee');
 Route::get('/employee/edit/{id}', [EmployeeController::class, 'getEditEmployee'])->name('get.employee');
 Route::post('/employee/edit/{id}', [EmployeeController::class, 'editEmployee'])->name('edit.employee');
@@ -40,6 +38,7 @@ Route::get('/department', [DepartmentController::class, 'getAll'])->name('getAll
 Route::get('/department/edit/{id}', [DepartmentController::class, 'getbyId'])->name('edit_department');
 Route::post('/department/add', [DepartmentController::class, 'add'])->name('add');
 Route::put('/department/edit/{id}', [DepartmentController::class, 'updateDepartment'])->name('update_department');
+Route::get('/department/delete/{id}', [DepartmentController::class, 'deleteDepartment'])->name('delete.department');
 
 
 

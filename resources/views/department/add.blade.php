@@ -19,13 +19,19 @@
                 @csrf
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="name" id="name" name="name" required
+                    <input type="name" id="name" name="name" required value="{{ old('name') }}"
                         class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    @error('name')
+                        <span class="text-sm text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700"> Description</label>
-                    <textarea type="description" id="description" name="description" required
+                    <textarea type="description" id="description" name="description" required value="{{ old('description') }}"
                         class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    @error('description')
+                        <span class="text-sm text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 @if (session('error'))
                     <x-alert :error="session('error')" />

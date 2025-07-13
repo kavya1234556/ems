@@ -30,8 +30,8 @@ class EmployeeController extends Controller
             'email' => 'required|string|email|unique:employees,email',
             'phone' => 'required|max:10|min:10',
             'position' => 'required|string',
-            'salary' => 'required|numeric',
-            'hire_date' => 'required|date',
+            'salary' => 'required|numeric|gt:0',
+            'hire_date' => 'required|date|before:today',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dept_id' => 'required|numeric'
         ]);
@@ -64,7 +64,7 @@ class EmployeeController extends Controller
             'phone' => 'required|max:10|min:10',
             'position' => 'required|string',
             'salary' => 'required|numeric|gt:0',
-            'hire_date' => 'required|date',
+            'hire_date' => 'required|date|before:today',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'dept_id' => 'required|numeric'
         ]);
@@ -115,18 +115,15 @@ class EmployeeController extends Controller
                 $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
             });
         }
+        // dd($query->toSql());
         // dd($query);
-        $employees = $query->paginate(10);
+        $employees = $query->with('departments')->paginate(10);
+
         // dd($employees);
         //  else {
         //     $employees = Employee::with('departments')->latest()->paginate(10);
         // }
-        if ($employees->count() < 1) {
-            dd("hello");
-            return redirect()->back()->with('message', "No employee has been assigned to this group");
-        } else {
-            return view("employee", compact('employees', 'departments'));
-        }
+        return view("employee", compact('employees', 'departments'));
     }
 
 
@@ -134,6 +131,42 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
         $employee->delete();
-        return redirect()->back();
+        return redirect()->back()->with("success", "Deleted the employee successfully");
     }
+
+    public function getAllDeletedEmployee(Request $request)
+    {
+        $departments = Department::get();
+        $query = Employee::query()->onlyTrashed();
+        $id = $request->dept_id;
+        $searchData = $request->input('search');
+        // dd($searchData);
+        if ($id) {
+
+            $department = Department::findOrFail($id);
+            $query->where('dept_id', $department->id);
+        }
+        if ($searchData) {
+            // dd($searchData);
+            // $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
+
+            $query->where(function ($query) use ($searchData) {
+                $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
+            });
+        }
+        // dd($query);
+        $employees = $query->paginate(10);
+        // dd($employees);
+        //  else {
+        //     $employees = Employee::with('departments')->latest()->paginate(10);
+        // }
+        return view("employee.restore", compact('employees', 'departments'));
+    }
+    public function restoreEmployee(string $id)
+    {
+        $employee = Employee::onlyTrashed()->findOrFail($id);
+        $employee->restore();
+        return redirect()->back()->with("success", "Restored the employee successfully");
+    }
+
 }

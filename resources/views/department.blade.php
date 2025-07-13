@@ -8,50 +8,62 @@
     <title>Department</title>
 </head>
 
-<body class="bg-gray-100 p-4">
+<body class="bg-gray-100 min-h-screen font-sans">
     <x-navbar />
-    @if (session('success'))
-        <x-success :message="session('success')" />
-    @endif
-    <div class="flex justify-end p-3">
-        <a href="{{ route('addDepartment') }}">
-            <button class="w-[150px] bg-blue-500 text-white mt-[20px] rounded-xl h-[40px] hover:bg-blue-600">
-                Add Department
-            </button>
-        </a>
-    </div>
-    <div class="overflow-x-auto bg-white rounded-lg shadow-md mt-6">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-blue-500">
-                <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">S.N</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Department Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Description</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($department as $dep)
+
+    <div class="mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <x-success :message="session('success')" />
+        @endif
+        @if (session('error'))
+            <x-alert :error="session('error')" />
+        @endif
+
+        <!-- Header & Add Button -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Departments</h1>
+            <a href="{{ route('addDepartment') }}">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    + Add Department
+                </button>
+            </a>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-blue-600 text-white">
                     <tr>
-                        <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4">{{ $dep->name }}</td>
-                        <td class="px-6 py-4">{{ $dep->description }}</td>
-                        <td class="px-6 py-4 flex gap-4">
-                            <a href="/department/edit/{{ $dep->id }}" class="text-blue-500 hover:text-blue-700">
-                                ✏️
-                            </a>
-                            <a href="{{ route('delete.department', $dep->id) }}"
-                                class="text-blue-500 hover:text-blue-700">
-                                🗑️
-                            </a>
-                        </td>
+                        <th class="px-6 py-3 text-left font-semibold">S.N</th>
+                        <th class="px-6 py-3 text-left font-semibold">Department Name</th>
+                        <th class="px-6 py-3 text-left font-semibold">Description</th>
+                        <th class="px-6 py-3 text-center font-semibold">Actions</th>
                     </tr>
-                @endforeach
-                @if (session('error'))
-                    <x-alert :error="session('error')" />
-                @endif
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white">
+                    @forelse($department as $dep)
+                        <tr>
+                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4">{{ $dep->name }}</td>
+                            <td class="px-6 py-4">{{ $dep->description }}</td>
+                            <td class="px-6 py-4 text-center flex justify-center gap-4">
+                                <a href="/department/edit/{{ $dep->id }}" title="Edit"
+                                    class="text-blue-500 hover:text-blue-700 text-xl">✏️</a>
+                                <a href="{{ route('delete.department', $dep->id) }}" title="Delete"
+                                    class="text-red-500 hover:text-red-700 text-xl">🗑️</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-gray-500">
+                                No departments found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 

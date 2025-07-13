@@ -8,87 +8,107 @@
     <title>Employee</title>
 </head>
 
-<body class="bg-gray-100 p-4">
+<body class="bg-gray-100 min-h-screen font-sans">
     <x-navbar />
+    @if (session('success'))
+        <x-success :message="session('success')" />
+    @endif
+    <div class="mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Employee List</h1>
+            <a href="{{ route('store.employee') }}">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    + Add Employee
+                </button>
+            </a>
+        </div>
 
-
-    <div class="flex justify-end items-end p-3">
-        <div class="flex justify-center items-center gap-2 mt-[20px]">
-            <form action="{{ route('getAllEmployee') }}" method="GET">
-                <div class="flex gap-1">
+        <!-- Filter Form -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <form action="{{ route('getAllEmployee') }}" method="GET"
+                class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                     <input id="search" name="search" value="{{ request()->search }}"
-                        class="mt-1 w-[250px] h-[40px] px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
-                    <button type="submit"
-                        class="w-[100px] mt-1 bg-blue-500 text-white rounded-xl h-[40px] hover:bg-blue-600">
-                        Search
-                    </button>
+                        placeholder="Search by name, email..."
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                 </div>
-                <div class="flex gap-1">
+
+                <div>
+                    <label for="dept_id" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
                     <select id="dept_id" name="dept_id"
-                        class="mt-1 w-[150px] h-[40px] px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Select your Option</option>
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Departments</option>
                         @foreach ($departments as $dep)
                             <option value='{{ $dep->id }}' {{ request()->dept_id == $dep->id ? 'selected' : '' }}>
                                 {{ $dep->name }}
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="flex gap-2">
                     <button type="submit"
-                        class="w-[100px] mt-1 bg-blue-500 text-white rounded-xl h-[40px] hover:bg-blue-600">
-                        Filter
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition w-full">
+                        Apply Filter
                     </button>
+                    <a href="{{ route('getAllEmployee') }}"
+                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition w-full text-center">
+                        Clear
+                    </a>
                 </div>
             </form>
-            <a href="{{ route('store.employee') }}">
-                <button class="w-[150px] bg-blue-500 text-white rounded-xl h-[40px] hover:bg-blue-600">
-                    Add Employee
-                </button>
-            </a>
         </div>
-    </div>
-    <div class="overflow-x-auto bg-white rounded-lg shadow-md mt-6">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-blue-500">
-                <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">S.N</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">First Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Last Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">email</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Phone</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Position</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Salary</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Hire Date</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">department</th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Action</th>
 
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($employees as $emp)
+        <!-- Employee Table -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-blue-600 text-white">
                     <tr>
-                        <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4">{{ $emp->first_name }}</td>
-                        <td class="px-6 py-4">{{ $emp->last_name }}</td>
-                        <td class="px-6 py-4">{{ $emp->email }}</td>
-                        <td class="px-6 py-4">{{ $emp->phone }}</td>
-                        <td class="px-6 py-4">{{ $emp->position }}</td>
-                        <td class="px-6 py-4">{{ $emp->salary }}</td>
-                        <td class="px-6 py-4">{{ $emp->hire_date }}</td>
-                        <td class="px-6 py-4">{{ $emp->departments->name }}</td>
-                        <td class="px-6 py-4 flex gap-4">
-                            <a href="/employee/edit/{{ $emp->id }}" class="text-blue-500 hover:text-blue-700">
-                                ✏️
-                            </a>
-                            <a href="{{ route('delete.employee', $emp->id) }}"
-                                class="text-blue-500 hover:text-blue-700">
-                                🗑️
-                            </a>
-                        </td>
+                        <th class="px-6 py-3 text-left font-semibold">S.N</th>
+                        <th class="px-6 py-3 text-left font-semibold">First Name</th>
+                        <th class="px-6 py-3 text-left font-semibold">Last Name</th>
+                        <th class="px-6 py-3 text-left font-semibold">Email</th>
+                        <th class="px-6 py-3 text-left font-semibold">Phone</th>
+                        <th class="px-6 py-3 text-left font-semibold">Position</th>
+                        <th class="px-6 py-3 text-left font-semibold">Salary</th>
+                        <th class="px-6 py-3 text-left font-semibold">Hire Date</th>
+                        <th class="px-6 py-3 text-left font-semibold">Department</th>
+                        <th class="px-6 py-3 text-center font-semibold">Action</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $employees->appends(request()->query())->links() }}
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse ($employees as $emp)
+                        <tr>
+                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4">{{ $emp->first_name }}</td>
+                            <td class="px-6 py-4">{{ $emp->last_name }}</td>
+                            <td class="px-6 py-4">{{ $emp->email }}</td>
+                            <td class="px-6 py-4">{{ $emp->phone }}</td>
+                            <td class="px-6 py-4">{{ $emp->position }}</td>
+                            <td class="px-6 py-4">Rs. {{ number_format($emp->salary) }}</td>
+                            <td class="px-6 py-4">{{ $emp->hire_date }}</td>
+                            <td class="px-6 py-4">{{ $emp->departments->name }}</td>
+                            <td class="px-6 py-4 text-center flex justify-center gap-3">
+                                <a href="/employee/edit/{{ $emp->id }}" title="Edit"
+                                    class="text-blue-500 hover:text-blue-700 text-xl">✏️</a>
+                                <a href="{{ route('delete.employee', $emp->id) }}" title="Delete"
+                                    class="text-red-500 hover:text-red-700 text-xl">🗑️</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="10" class="text-center py-4 text-gray-500">No employees found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="p-4">
+                {{ $employees->appends(request()->query())->links() }}
+            </div>
+        </div>
     </div>
 </body>
 

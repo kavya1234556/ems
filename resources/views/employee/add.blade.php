@@ -80,7 +80,7 @@
 
                     <div>
                         <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
-                        <input type="number" id="salary" name="salary" required step="0.01"
+                        <input type="number" id="salary" name="salary" required step="0.01" min="0"
                             value="{{ old('salary') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                         @error('salary')
@@ -90,7 +90,8 @@
 
                     <div>
                         <label for="hire_date" class="block text-sm font-medium text-gray-700">Hire Date</label>
-                        <input type="date" id="hire_date" name="hire_date" required value="{{ old('hire_date') }}"
+                        <input type="date" id="hire_date" name="hire_date" max="{{ date('Y-m-d') }}" required
+                            value="{{ old('hire_date') }}"
                             class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                         @error('hire_date')
                             <span class="text-sm text-red-500">{{ $message }}</span>

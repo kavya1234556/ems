@@ -47,7 +47,7 @@ class EmployeeController extends Controller
             'hire_date' => $request->hire_date,
             'dept_id' => $request->dept_id
         ]);
-        return redirect('employee/view')->with('message', "New Employee has been added");
+        return redirect('employee/view')->with('success', "New Employee has been added");
     }
     public function getEditEmployee(string $id)
     {
@@ -93,7 +93,7 @@ class EmployeeController extends Controller
 
         $employee->update($data);
 
-        return redirect('employee/view')->with('message', "Employee detail has been updated");
+        return redirect('employee/view')->with('success', "Employee detail has been updated");
     }
     public function getAllActive(Request $request)
     {
@@ -112,7 +112,7 @@ class EmployeeController extends Controller
                 $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
             });
         }
-        $employees = $query->with('departments')->paginate(10);
+        $employees = $query->with('departments')->latest()->paginate(10);
         return view("employee.view", compact('employees', 'departments'));
     }
 

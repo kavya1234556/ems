@@ -32,7 +32,7 @@
                 <div>
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                     <input id="search" name="search" value="{{ request()->search }}"
-                        placeholder="Search by name, email..."
+                        placeholder="Search by First Name, Last Name"
                         class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
                 </div>
 

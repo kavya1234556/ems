@@ -121,10 +121,16 @@
                     <x-alert :error="session('error')" />
                 @endif
 
-                <button type="submit"
-                    class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                    Add
-                </button>
+                <div class="flex gap-4">
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Edit
+                    </button>
+                    <a href="{{ route('getAllEmployee') }}"
+                        class="w-full bg-blue-500 text-white text-center font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Cancel
+                    </a>
+                </div>
             </form>
         </div>
     </div>

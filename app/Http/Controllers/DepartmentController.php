@@ -13,7 +13,7 @@ class DepartmentController extends Controller
     public function getAll()
     {
         $department = Department::latest()->get();
-        return view("department", compact('department'));
+        return view("department.view", compact('department'));
     }
 
     public function add(Request $request)
@@ -27,7 +27,7 @@ class DepartmentController extends Controller
             'description' => $request->description,
             'created_by' => User::where('email', 'admin@gmail.com')->get()->first()->id
         ]);
-        return redirect('department')->with('success', "New Department has been added");
+        return redirect('department/view')->with('success', "New Department has been added");
     }
     public function getbyId(string $id)
     {
@@ -46,7 +46,7 @@ class DepartmentController extends Controller
             'name' => $request->name,
             'description' => $request->description,
         ]);
-        return redirect('department')->with('success', "Department has been edited");
+        return redirect('department/view')->with('success', "Department has been edited");
     }
 
     public function deleteDepartment(string $id)

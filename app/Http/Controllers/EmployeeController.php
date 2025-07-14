@@ -47,7 +47,7 @@ class EmployeeController extends Controller
             'hire_date' => $request->hire_date,
             'dept_id' => $request->dept_id
         ]);
-        return redirect('employee')->with('message', "New Employee has been added");
+        return redirect('employee/view')->with('message', "New Employee has been added");
     }
     public function getEditEmployee(string $id)
     {
@@ -93,7 +93,7 @@ class EmployeeController extends Controller
 
         $employee->update($data);
 
-        return redirect('employee')->with('message', "Employee detail has been updated");
+        return redirect('employee/view')->with('message', "Employee detail has been updated");
     }
     public function getAllActive(Request $request)
     {
@@ -101,29 +101,19 @@ class EmployeeController extends Controller
         $query = Employee::query();
         $id = $request->dept_id;
         $searchData = $request->input('search');
-        // dd($searchData);
         if ($id) {
 
             $department = Department::findOrFail($id);
             $query->where('dept_id', $department->id);
         }
         if ($searchData) {
-            // dd($searchData);
-            // $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
 
             $query->where(function ($query) use ($searchData) {
                 $query->where('first_name', 'like', '%' . $searchData . '%')->orWhere('last_name', 'like', '%' . $searchData . '%');
             });
         }
-        // dd($query->toSql());
-        // dd($query);
         $employees = $query->with('departments')->paginate(10);
-
-        // dd($employees);
-        //  else {
-        //     $employees = Employee::with('departments')->latest()->paginate(10);
-        // }
-        return view("employee", compact('employees', 'departments'));
+        return view("employee.view", compact('employees', 'departments'));
     }
 
 

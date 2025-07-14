@@ -2,9 +2,9 @@
     <nav class="bg-blue-600 p-4 shadow">
         <div class="flex justify-between items-center">
             <div class="flex space-x-4 justify-start items-center">
-                <a href="/department"
+                <a href="/department/view"
                     class="text-white font-medium hover:bg-blue-700 px-3 py-2 rounded transition">Department</a>
-                <a href="/employee"
+                <a href="/employee/view"
                     class="text-white font-medium hover:bg-blue-700 px-3 py-2 rounded transition">Employee</a>
             </div>
             <div class="flex">

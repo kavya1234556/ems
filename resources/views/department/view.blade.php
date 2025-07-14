@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @vite('resources/css/app.css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>Department</title>
 </head>
 
@@ -49,9 +50,13 @@
                             <td class="px-6 py-4">{{ $dep->description }}</td>
                             <td class="px-6 py-4 text-center flex justify-center gap-4">
                                 <a href="/department/edit/{{ $dep->id }}" title="Edit"
-                                    class="text-blue-500 hover:text-blue-700 text-xl">✏️</a>
+                                    class="text-blue-500 hover:text-blue-700 text-xl">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
                                 <a href="{{ route('delete.department', $dep->id) }}" title="Delete"
-                                    class="text-red-500 hover:text-red-700 text-xl">🗑️</a>
+                                    class="text-red-500 hover:text-red-700 text-xl">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     @empty

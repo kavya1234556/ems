@@ -22,7 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/employee/add', function () {
     return view('employee/add');
 })->middleware("auth")->name('store.employee');
-Route::get('/employee', [EmployeeController::class, 'getAllActive'])->middleware("auth")->name('getAllEmployee');
+Route::get('/employee/view', [EmployeeController::class, 'getAllActive'])->middleware("auth")->name('getAllEmployee');
 // Route::get('/employee/filter', [EmployeeController::class, 'filterByDepartment'])->name('filter.employee');
 Route::get('/employee/add', [EmployeeController::class, 'getDepartment'])->middleware("auth")->name('store.employee');
 Route::get('/employee/edit/{id}', [EmployeeController::class, 'getEditEmployee'])->middleware("auth")->name('get.employee');
@@ -38,7 +38,7 @@ Route::get('/employee/restore', [EmployeeController::class, 'getAllDeletedEmploy
 Route::get('/department/add', function () {
     return view('department/add');
 })->middleware("auth")->name('addDepartment');
-Route::get('/department', [DepartmentController::class, 'getAll'])->middleware("auth")->name('getAllDepartment');
+Route::get('/department/view', [DepartmentController::class, 'getAll'])->middleware("auth")->name('getAllDepartment');
 Route::get('/department/edit/{id}', [DepartmentController::class, 'getbyId'])->middleware("auth")->name('edit_department');
 Route::post('/department/add', [DepartmentController::class, 'add'])->middleware("auth")->name('add');
 Route::put('/department/edit/{id}', [DepartmentController::class, 'updateDepartment'])->middleware("auth")->name('update_department');
